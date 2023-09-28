@@ -341,7 +341,6 @@ function elmt!(Ke, re, element, cellvalues, facevalues, grid, mp, ue, state)
         
         for i in 1:n_basefuncs
             δεi = shape_symmetric_gradient(cellvalues, q_point, i)
-            δu = shape_value(cellvalues, q_point, i)
             for j in 1:i
                 δεj = shape_symmetric_gradient(cellvalues, q_point, j)
                 Ke[i,j] += (χ)^(mp.p) * (δεi ⊡ mp.C ⊡ δεj) * dΩ 
@@ -421,7 +420,7 @@ function topopt(ra,ρ,n,filename; output=:false)
     r = zeros(n_dofs) # residual
     K = create_sparsity_pattern(dh) # stiffness matrix
     
-    i_max = 300 ## maximum number of iteration steps
+    i_max = 300 # maximum number of iteration steps
     tol = 1e-4
     compliance = 0.0
     compliance_0 = 0.0
@@ -518,7 +517,7 @@ end
 
 topopt(0.02, 0.5, 60, "small_radius"; output=:false);
 topopt(0.03, 0.5, 60, "large_radius"; output=:false);
-##topopt(0.02, 0.5, 60, "topopt_animation"; output=:true); # can be used to create animations
+#topopt(0.02, 0.5, 60, "topopt_animation"; output=:true); # can be used to create animations
 
 # We observe, that the stiffness for the lower value of $ra$ is higher,
 # but also requires more iterations until convergence and finer structures to be manufactured, as can be seen in Figure 2:
